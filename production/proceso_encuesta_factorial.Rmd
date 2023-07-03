@@ -1,0 +1,245 @@
+---
+title: "Factorial desing"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+output: 
+  html_document:
+     theme: flatly
+     highlight: tango
+     toc: true
+     toc_float: true
+     toc_depth: 2
+     number_sections: false
+     code_folding: hide
+---
+# Vignette design
+
+Code in SAS (https://odamid-euw1.oda.sas.com/)
+
+```{r, eval=FALSE, include=TRUE}
+%mktruns(2 3 3 4 3 3 3 4 4)
+Saturated      = 21                                       
+Full Factorial = 31,104                                   
+Some Reasonable                      Cannot Be            
+   Design Sizes       Violations     Divided By           
+            144 *              0                          
+             72                3     16                   
+            216                3     16                   
+             36                6      8 16                
+            108                6      8 16                
+            180                6      8 16                
+             48               10      9                   
+             96               10      9                   
+            192               10      9                   
+             24               13      9 16                
+             21 S             40      2  4  6  8  9 12 16 
+ - 100% Efficient design can be made with the MktEx macro.
+ - Saturated Design - The smallest design that can be made.
+   Note that the saturated design is not one of the       
+   recommended designs for this problem.  It is shown     
+   to provide some context for the recommended sizes.     
+
+```
+
+```{r, eval=FALSE, include=TRUE}
+%mktex(2 3 3 4 3 3 3 4 4, n=144, seed=2624)
+     Design    Row,Col  D-Efficiency  D-Efficiency  Notes                                    
+     ----------------------------------------------------------                              
+          1      Start      100.0000      100.0000  Tab                                      
+          1        End      100.0000                                                         
+
+
+%mktblock(data=Randomized, nblocks=10, seed=2624)
+/* 10 decks, 4 decks with 15 vignettes and 6 decks with 14 vignettes  */
+```
+
+# Generation of the vignettes
+
+- First we load the file containing the vignette information generated in SAS.
+
+```{r,warning=FALSE,message=F}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(readxl,dplyr,knitr,kableExtra)
+
+df_vig <- xlsx::read.xlsx(file = "../input/vignetas.xlsx",sheetIndex = 1)
+
+colnames = c("obs","deck","vig","gender", "age", "migration", "religion", "education", "employment_status", "income", "political_orientation", "cultural_values")
+names(df_vig) <- colnames
+names(df_vig)
+vig_dat<- df_vig %>% mutate(deck_vig=paste0(deck,vig)) %>% select(obs,deck,vig,deck_vig,everything())
+```
+- Save the vignette information for later use in the analysis.
+
+```{r,warning=FALSE}
+save(vig_dat,file = here::here("input/data/proc/vig_dim.RData"))
+```
+
+
+## Labels
+
+-  level labelling for text generation
+
+```{r,warning=FALSE,message=F}
+df_vig <- 
+df_vig %>% 
+    mutate(
+      gender = recode(gender, `1` = "Jan", `2` = "Sophia"),
+      age = recode(
+        age,
+        `1` = "is 35 years old.",
+        `2` = "is 45 years old.",
+        `3` = "is 65 years old."
+      ),
+      migration  = recode(
+        migration,
+        `1` = "SUS was born in Germany",
+        `2` = "SUS was born in Germany, comes from a Turkish family",
+        `3` = "SUS was born in Syria"
+      ),
+      religion = recode(
+        religion,
+        `1` = "and goes to the parish every Sunday.",
+        `2` = "and goes to the moske every Friday.",
+        `3` = "and goes to the synagogue every Saturday.",
+        `4` = "and does not profess any religion."
+      ),
+      education  = recode(
+        education,
+        `1` = "Also, SUB holds a primary school diploma,",
+        `2` = "Also, SUB holds a secondary school diploma,",
+        `3` = "Also, SUB holds a university degree,",
+      ),
+      income = recode(
+        income,
+        `1` = "receives a monthly income of 1200€ after taxes",
+        `2` = "receives a monthly income of 2400€ after taxes",
+        `3` = "receives a monthly income of 3700€ after taxes",
+      ),
+      employment_status = recode(
+        employment_status,
+        `1` = "and has a full-time job.",
+        `2` = "and is unemployed.",
+        `3` = "and is a homemaker."
+      ),
+      political_orientation = recode(
+        political_orientation,
+        `1` = "SUS defines PRON as a left-wing person that ",
+        `2` = "SUS defines PRON as a politically moderate person that",
+        `3` = "SUS defines PRON as a right-wing person that",
+        `4` = "SUS is not interested in politics and"
+      ),
+      cultural_values = recode(
+        cultural_values,
+        `1` = "values the importance of being be tolerant and to help people around GENDER3",
+        `2` = "values the importance of feeling safe, to fit in with others and to respect traditions.",
+        `3` = "values the importance of reaching personal achievements and to be in charge",
+        `4` = "values the importance of making GENDER3 own decisions, and to live a fun and adventurous life."
+      )      
+    )
+
+```
+
+## Text generation
+
+- These are some examples (random sample of 30 cases) that include the complete desing
+
+```{r echo=FALSE, results='asis'}
+df_vig <- 
+    df_vig %>% 
+    mutate(vig_text = paste(gender, age, migration, religion,education, income, employment_status,political_orientation,cultural_values)) %>% 
+    ungroup()
+
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Sophia",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "SUS",
+      replacement = "She"
+    ),
+    no = df_vig$vig_text
+  )
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Jan",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "SUS",
+      replacement = "He"
+    ),
+    no = df_vig$vig_text
+  )
+
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Sophia",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "SUB",
+      replacement = "she"
+    ),
+    no = df_vig$vig_text
+  )
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Jan",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "SUB",
+      replacement = "he"
+    ),
+    no = df_vig$vig_text
+  )
+
+
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Sophia",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "PRON",
+      replacement = "herself"
+    ),
+    no = df_vig$vig_text
+  )
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Jan",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "PRON",
+      replacement = "himself"
+    ),
+    no = df_vig$vig_text
+  )
+
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Sophia",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "GENDER3",
+      replacement = "her"
+    ),
+    no = df_vig$vig_text
+  )
+df_vig$vig_text <-
+  ifelse(
+    df_vig$gender == "Jan",
+    yes = stringr::str_replace_all(
+      string = df_vig$vig_text,
+      pattern = "GENDER3",
+      replacement = "him"
+    ),
+    no = df_vig$vig_text
+  )
+
+
+df_vig %>% 
+  select(vig_text) %>% 
+  mutate(Example=paste(vig_text)) %>% 
+  sample_n(size = 30) %>% 
+  select(Example) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
