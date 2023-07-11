@@ -14,7 +14,9 @@ output:
 ---
 # Vignette design
 
-Code in SAS (https://odamid-euw1.oda.sas.com/)
+1. [Draft Google Docs](https://docs.google.com/document/d/1Tn_vZTNaxIOeK5lHcQkPWt3Knw_OqKIEe7pPf19CI4c/edit) 
+2. Code in SAS (https://odamid-euw1.oda.sas.com/)
+3. Macro (https://support.sas.com/rnd/app/macros/MktEx/MktEx.pdf)
 
 ```{r, eval=FALSE, include=TRUE}
 %mktruns(2 3 3 4 3 3 3 4 4)
@@ -46,12 +48,18 @@ Some Reasonable                      Cannot Be
      Design    Row,Col  D-Efficiency  D-Efficiency  Notes                                    
      ----------------------------------------------------------                              
           1      Start      100.0000      100.0000  Tab                                      
-          1        End      100.0000                                                         
-
-
-%mktblock(data=Randomized, nblocks=10, seed=2624)
-/* 10 decks, 4 decks with 15 vignettes and 6 decks with 14 vignettes  */
+          1        End      100.0000
 ```
+
+
+```{r, eval=FALSE, include=TRUE}
+%mktblock(data=Randomized, nblocks=10, seed=2624) # 10 decks
+/* 10 decks, 4 decks with 15 vignettes and 6 decks with 14 vignettes  */
+
+%mktblock(data=Randomized, nblocks=15, seed=2624) # 15 decks
+/* 15 decks, 9 decks with 10 vignettes and 6 decks with 9 vignettes  */
+```
+
 
 # Generation of the vignettes
 
@@ -61,7 +69,8 @@ Some Reasonable                      Cannot Be
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(readxl,dplyr,knitr,kableExtra)
 
-df_vig <- xlsx::read.xlsx(file = "../input/vignetas.xlsx",sheetIndex = 1)
+# df_vig <- xlsx::read.xlsx(file = "../input/vignetas.xlsx",sheetIndex = 1)
+df_vig <- xlsx::read.xlsx(file = "../input/vignetas15.xlsx",sheetIndex = 1)
 
 colnames = c("obs","deck","vig","gender", "age", "migration", "religion", "education", "employment_status", "income", "political_orientation", "cultural_values")
 names(df_vig) <- colnames
@@ -111,9 +120,9 @@ df_vig %>%
       ),
       income = recode(
         income,
-        `1` = "receives a monthly income of 1200€ after taxes",
-        `2` = "receives a monthly income of 2400€ after taxes",
-        `3` = "receives a monthly income of 3700€ after taxes",
+        `1` = "receives a monthly household income of 850€ after taxes and transfers",
+        `2` = "receives a monthly household income of 2,500€ after taxes and transfers",
+        `3` = "receives a monthly household income of 6,000€ after taxes and transfers",
       ),
       employment_status = recode(
         employment_status,
@@ -137,6 +146,14 @@ df_vig %>%
       )      
     )
 
+
+# sjmisc::flat_table(table(df_vig$income,df_vig$employment_status))
+# df_vig %>% select(gender:cultural_values) %>% polycor::hetcor()
+
+df_vig %>% group_by(deck) %>% 
+  summarise(vig=n()) %>% 
+  kable(col.names = c("Deck","Number of vignettes")) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
 ## Text generation
@@ -243,4 +260,6 @@ df_vig %>%
   kable() %>% 
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
+
+# Outcome
 

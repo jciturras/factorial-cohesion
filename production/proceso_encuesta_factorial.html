@@ -1902,14 +1902,19 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Factorial desing</h1>
 <h4 class="author">Julio Iturra</h4>
-<h4 class="date">lunes 03 julio 2023 11:10:52</h4>
+<h4 class="date">martes 11 julio 2023 23:39:17</h4>
 
 </div>
 
 
 <div id="vignette-design" class="section level1">
 <h1>Vignette design</h1>
-<p>Code in SAS (<a href="https://odamid-euw1.oda.sas.com/" class="uri">https://odamid-euw1.oda.sas.com/</a>)</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://docs.google.com/document/d/1Tn_vZTNaxIOeK5lHcQkPWt3Knw_OqKIEe7pPf19CI4c/edit">Draft
+Google Docs</a></li>
+<li>Code in SAS (<a href="https://odamid-euw1.oda.sas.com/" class="uri">https://odamid-euw1.oda.sas.com/</a>)</li>
+<li>Macro (<a href="https://support.sas.com/rnd/app/macros/MktEx/MktEx.pdf" class="uri">https://support.sas.com/rnd/app/macros/MktEx/MktEx.pdf</a>)</li>
+</ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>%<span class="fu">mktruns</span>(<span class="dv">2</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">4</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Saturated      <span class="ot">=</span> <span class="dv">21</span>                                       </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Full Factorial <span class="ot">=</span> <span class="dv">31</span>,<span class="dv">104</span>                                   </span>
@@ -1935,11 +1940,12 @@ border-radius: 0px;
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>     Design    Row,Col  D<span class="sc">-</span>Efficiency  D<span class="sc">-</span>Efficiency  Notes                                    </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="sc">----------------------------------------------------------</span>                              </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>      Start      <span class="fl">100.0000</span>      <span class="fl">100.0000</span>  Tab                                      </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>        End      <span class="fl">100.0000</span>                                                         </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>%<span class="fu">mktblock</span>(<span class="at">data=</span>Randomized, <span class="at">nblocks=</span><span class="dv">10</span>, <span class="at">seed=</span><span class="dv">2624</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">*</span> <span class="dv">10</span> decks, <span class="dv">4</span> decks with <span class="dv">15</span> vignettes and <span class="dv">6</span> decks with <span class="dv">14</span> vignettes  <span class="sc">*</span><span class="er">/</span></span></code></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>        End      <span class="fl">100.0000</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>%<span class="fu">mktblock</span>(<span class="at">data=</span>Randomized, <span class="at">nblocks=</span><span class="dv">10</span>, <span class="at">seed=</span><span class="dv">2624</span>) <span class="co"># 10 decks</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">*</span> <span class="dv">10</span> decks, <span class="dv">4</span> decks with <span class="dv">15</span> vignettes and <span class="dv">6</span> decks with <span class="dv">14</span> vignettes  <span class="sc">*</span><span class="er">/</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>%<span class="fu">mktblock</span>(<span class="at">data=</span>Randomized, <span class="at">nblocks=</span><span class="dv">15</span>, <span class="at">seed=</span><span class="dv">2624</span>) <span class="co"># 15 decks</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span><span class="er">*</span> <span class="dv">15</span> decks, <span class="dv">9</span> decks with <span class="dv">10</span> vignettes and <span class="dv">6</span> decks with <span class="dv">9</span> vignettes  <span class="sc">*</span><span class="er">/</span></span></code></pre></div>
 </div>
 <div id="generation-of-the-vignettes" class="section level1">
 <h1>Generation of the vignettes</h1>
@@ -1947,84 +1953,228 @@ border-radius: 0px;
 <li>First we load the file containing the vignette information generated
 in SAS.</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;pacman&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>) <span class="co"># instalar pacman</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(readxl,dplyr,knitr,kableExtra)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df_vig <span class="ot">&lt;-</span> xlsx<span class="sc">::</span><span class="fu">read.xlsx</span>(<span class="at">file =</span> <span class="st">&quot;../input/vignetas.xlsx&quot;</span>,<span class="at">sheetIndex =</span> <span class="dv">1</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>colnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;obs&quot;</span>,<span class="st">&quot;deck&quot;</span>,<span class="st">&quot;vig&quot;</span>,<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;migration&quot;</span>, <span class="st">&quot;religion&quot;</span>, <span class="st">&quot;education&quot;</span>, <span class="st">&quot;employment_status&quot;</span>, <span class="st">&quot;income&quot;</span>, <span class="st">&quot;political_orientation&quot;</span>, <span class="st">&quot;cultural_values&quot;</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df_vig) <span class="ot">&lt;-</span> colnames</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df_vig)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;pacman&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>) <span class="co"># instalar pacman</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(readxl,dplyr,knitr,kableExtra)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># df_vig &lt;- xlsx::read.xlsx(file = &quot;../input/vignetas.xlsx&quot;,sheetIndex = 1)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df_vig <span class="ot">&lt;-</span> xlsx<span class="sc">::</span><span class="fu">read.xlsx</span>(<span class="at">file =</span> <span class="st">&quot;../input/vignetas15.xlsx&quot;</span>,<span class="at">sheetIndex =</span> <span class="dv">1</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>colnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;obs&quot;</span>,<span class="st">&quot;deck&quot;</span>,<span class="st">&quot;vig&quot;</span>,<span class="st">&quot;gender&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;migration&quot;</span>, <span class="st">&quot;religion&quot;</span>, <span class="st">&quot;education&quot;</span>, <span class="st">&quot;employment_status&quot;</span>, <span class="st">&quot;income&quot;</span>, <span class="st">&quot;political_orientation&quot;</span>, <span class="st">&quot;cultural_values&quot;</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df_vig) <span class="ot">&lt;-</span> colnames</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df_vig)</span></code></pre></div>
 <pre><code>##  [1] &quot;obs&quot;                   &quot;deck&quot;                  &quot;vig&quot;                  
 ##  [4] &quot;gender&quot;                &quot;age&quot;                   &quot;migration&quot;            
 ##  [7] &quot;religion&quot;              &quot;education&quot;             &quot;employment_status&quot;    
 ## [10] &quot;income&quot;                &quot;political_orientation&quot; &quot;cultural_values&quot;</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vig_dat<span class="ot">&lt;-</span> df_vig <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">deck_vig=</span><span class="fu">paste0</span>(deck,vig)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(obs,deck,vig,deck_vig,<span class="fu">everything</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vig_dat<span class="ot">&lt;-</span> df_vig <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">deck_vig=</span><span class="fu">paste0</span>(deck,vig)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(obs,deck,vig,deck_vig,<span class="fu">everything</span>())</span></code></pre></div>
 <ul>
 <li>Save the vignette information for later use in the analysis.</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(vig_dat,<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;input/data/proc/vig_dim.RData&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(vig_dat,<span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&quot;input/data/proc/vig_dim.RData&quot;</span>))</span></code></pre></div>
 <div id="labels" class="section level2">
 <h2>Labels</h2>
 <ul>
 <li>level labelling for text generation</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_vig <span class="ot">&lt;-</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df_vig <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">gender =</span> <span class="fu">recode</span>(gender, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Jan&quot;</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Sophia&quot;</span>),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">age =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        age,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;is 35 years old.&quot;</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;is 45 years old.&quot;</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;is 65 years old.&quot;</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">migration  =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        migration,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS was born in Germany&quot;</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS was born in Germany, comes from a Turkish family&quot;</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS was born in Syria&quot;</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">religion =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        religion,</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and goes to the parish every Sunday.&quot;</span>,</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and goes to the moske every Friday.&quot;</span>,</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and goes to the synagogue every Saturday.&quot;</span>,</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and does not profess any religion.&quot;</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">education  =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        education,</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Also, SUB holds a primary school diploma,&quot;</span>,</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Also, SUB holds a secondary school diploma,&quot;</span>,</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Also, SUB holds a university degree,&quot;</span>,</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">income =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>        income,</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;receives a monthly income of 1200€ after taxes&quot;</span>,</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;receives a monthly income of 2400€ after taxes&quot;</span>,</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;receives a monthly income of 3700€ after taxes&quot;</span>,</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">employment_status =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>        employment_status,</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and has a full-time job.&quot;</span>,</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and is unemployed.&quot;</span>,</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and is a homemaker.&quot;</span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">political_orientation =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        political_orientation,</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS defines PRON as a left-wing person that &quot;</span>,</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS defines PRON as a politically moderate person that&quot;</span>,</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS defines PRON as a right-wing person that&quot;</span>,</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS is not interested in politics and&quot;</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">cultural_values =</span> <span class="fu">recode</span>(</span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>        cultural_values,</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of being be tolerant and to help people around GENDER3&quot;</span>,</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of feeling safe, to fit in with others and to respect traditions.&quot;</span>,</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of reaching personal achievements and to be in charge&quot;</span>,</span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of making GENDER3 own decisions, and to live a fun and adventurous life.&quot;</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>      )      </span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_vig <span class="ot">&lt;-</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df_vig <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">gender =</span> <span class="fu">recode</span>(gender, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Jan&quot;</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Sophia&quot;</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">age =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        age,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;is 35 years old.&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;is 45 years old.&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;is 65 years old.&quot;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">migration  =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        migration,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS was born in Germany&quot;</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS was born in Germany, comes from a Turkish family&quot;</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS was born in Syria&quot;</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">religion =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        religion,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and goes to the parish every Sunday.&quot;</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and goes to the moske every Friday.&quot;</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and goes to the synagogue every Saturday.&quot;</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and does not profess any religion.&quot;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">education  =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        education,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Also, SUB holds a primary school diploma,&quot;</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Also, SUB holds a secondary school diploma,&quot;</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;Also, SUB holds a university degree,&quot;</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">income =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        income,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;receives a monthly household income of 850€ after taxes and transfers&quot;</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;receives a monthly household income of 2,500€ after taxes and transfers&quot;</span>,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;receives a monthly household income of 6,000€ after taxes and transfers&quot;</span>,</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">employment_status =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        employment_status,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and has a full-time job.&quot;</span>,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and is unemployed.&quot;</span>,</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;and is a homemaker.&quot;</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">political_orientation =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        political_orientation,</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS defines PRON as a left-wing person that &quot;</span>,</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS defines PRON as a politically moderate person that&quot;</span>,</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS defines PRON as a right-wing person that&quot;</span>,</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;SUS is not interested in politics and&quot;</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">cultural_values =</span> <span class="fu">recode</span>(</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>        cultural_values,</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of being be tolerant and to help people around GENDER3&quot;</span>,</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of feeling safe, to fit in with others and to respect traditions.&quot;</span>,</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of reaching personal achievements and to be in charge&quot;</span>,</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> <span class="st">&quot;values the importance of making GENDER3 own decisions, and to live a fun and adventurous life.&quot;</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>      )      </span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co"># sjmisc::flat_table(table(df_vig$income,df_vig$employment_status))</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="co"># df_vig %&gt;% select(gender:cultural_values) %&gt;% polycor::hetcor()</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>df_vig <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(deck) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vig=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Deck&quot;</span>,<span class="st">&quot;Number of vignettes&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>))</span></code></pre></div>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Deck
+</th>
+<th style="text-align:right;">
+Number of vignettes
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="text-generation" class="section level2">
 <h2>Text generation</h2>
@@ -2043,279 +2193,294 @@ Example
 <tbody>
 <tr>
 <td style="text-align:left;">
-Jan is 65 years old. He was born in Germany and does not profess any
-religion. Also, he holds a secondary school diploma, receives a monthly
-income of 2400€ after taxes and is a homemaker. He defines himself as a
-politically moderate person that values the importance of making him own
-decisions, and to live a fun and adventurous life.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 45 years old. He was born in Germany, comes from a Turkish family
-and goes to the synagogue every Saturday. Also, he holds a primary
-school diploma, receives a monthly income of 3700€ after taxes and has a
-full-time job. He is not interested in politics and values the
-importance of reaching personal achievements and to be in charge
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 35 years old. She was born in Syria and goes to the moske
-every Friday. Also, she holds a primary school diploma, receives a
-monthly income of 3700€ after taxes and is a homemaker. She defines
-herself as a left-wing person that values the importance of feeling
-safe, to fit in with others and to respect traditions.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 45 years old. She was born in Germany and does not profess any
-religion. Also, she holds a university degree, receives a monthly income
-of 2400€ after taxes and is a homemaker. She defines herself as a
-right-wing person that values the importance of feeling safe, to fit in
-with others and to respect traditions.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 45 years old. He was born in Germany, comes from a Turkish family
-and goes to the moske every Friday. Also, he holds a primary school
-diploma, receives a monthly income of 2400€ after taxes and has a
-full-time job. He defines himself as a politically moderate person that
-values the importance of being be tolerant and to help people around him
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 35 years old. He was born in Syria and does not profess any
-religion. Also, he holds a university degree, receives a monthly income
-of 3700€ after taxes and is unemployed. He is not interested in politics
-and values the importance of being be tolerant and to help people around
-him
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 35 years old. She was born in Germany and goes to the
-synagogue every Saturday. Also, she holds a secondary school diploma,
-receives a monthly income of 2400€ after taxes and is unemployed. She
-defines herself as a right-wing person that values the importance of
-making her own decisions, and to live a fun and adventurous life.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 35 years old. He was born in Germany, comes from a Turkish family
-and does not profess any religion. Also, he holds a university degree,
-receives a monthly income of 2400€ after taxes and is a homemaker. He is
-not interested in politics and values the importance of being be
-tolerant and to help people around him
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 35 years old. He was born in Syria and goes to the parish every
-Sunday. Also, he holds a university degree, receives a monthly income of
-3700€ after taxes and is unemployed. He defines himself as a politically
-moderate person that values the importance of reaching personal
-achievements and to be in charge
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 45 years old. She was born in Syria and does not profess any
-religion. Also, she holds a university degree, receives a monthly income
-of 1200€ after taxes and has a full-time job. She defines herself as a
-right-wing person that values the importance of feeling safe, to fit in
-with others and to respect traditions.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 45 years old. He was born in Germany and goes to the parish every
-Sunday. Also, he holds a university degree, receives a monthly income of
-3700€ after taxes and is a homemaker. He defines himself as a right-wing
-person that values the importance of being be tolerant and to help
-people around him
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 45 years old. She was born in Syria and goes to the parish
-every Sunday. Also, she holds a university degree, receives a monthly
-income of 2400€ after taxes and has a full-time job. She defines herself
-as a left-wing person that values the importance of making her own
-decisions, and to live a fun and adventurous life.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 35 years old. She was born in Germany and goes to the moske
-every Friday. Also, she holds a primary school diploma, receives a
-monthly income of 2400€ after taxes and has a full-time job. She defines
-herself as a right-wing person that values the importance of reaching
-personal achievements and to be in charge
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 35 years old. He was born in Syria and goes to the parish every
-Sunday. Also, he holds a primary school diploma, receives a monthly
-income of 2400€ after taxes and is a homemaker. He defines himself as a
-politically moderate person that values the importance of reaching
-personal achievements and to be in charge
+Jan is 35 years old. He was born in Syria and goes to the synagogue
+every Saturday. Also, he holds a university degree, receives a monthly
+household income of 6,000€ after taxes and transfers and is unemployed.
+He defines himself as a right-wing person that values the importance of
+making him own decisions, and to live a fun and adventurous life.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Sophia is 65 years old. She was born in Syria and goes to the synagogue
 every Saturday. Also, she holds a primary school diploma, receives a
-monthly income of 1200€ after taxes and is unemployed. She defines
-herself as a left-wing person that values the importance of being be
-tolerant and to help people around her
+monthly household income of 850€ after taxes and transfers and is
+unemployed. She defines herself as a left-wing person that values the
+importance of being be tolerant and to help people around her
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sophia is 35 years old. She was born in Germany and goes to the parish
-every Sunday. Also, she holds a secondary school diploma, receives a
-monthly income of 3700€ after taxes and is unemployed. She is not
-interested in politics and values the importance of feeling safe, to fit
-in with others and to respect traditions.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 35 years old. She was born in Germany and goes to the
+Sophia is 45 years old. She was born in Germany and goes to the
 synagogue every Saturday. Also, she holds a primary school diploma,
-receives a monthly income of 2400€ after taxes and has a full-time job.
-She defines herself as a left-wing person that values the importance of
-being be tolerant and to help people around her
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Jan is 65 years old. He was born in Germany and does not profess any
-religion. Also, he holds a secondary school diploma, receives a monthly
-income of 1200€ after taxes and is a homemaker. He defines himself as a
-politically moderate person that values the importance of making him own
-decisions, and to live a fun and adventurous life.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 65 years old. She was born in Germany, comes from a Turkish
-family and goes to the synagogue every Saturday. Also, she holds a
-primary school diploma, receives a monthly income of 1200€ after taxes
-and is a homemaker. She defines herself as a politically moderate person
+receives a monthly household income of 6,000€ after taxes and transfers
+and is unemployed. She defines herself as a politically moderate person
 that values the importance of feeling safe, to fit in with others and to
 respect traditions.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Jan is 35 years old. He was born in Syria and goes to the synagogue
-every Saturday. Also, he holds a university degree, receives a monthly
-income of 3700€ after taxes and is unemployed. He defines himself as a
-right-wing person that values the importance of making him own
-decisions, and to live a fun and adventurous life.
+Jan is 45 years old. He was born in Germany, comes from a Turkish family
+and goes to the parish every Sunday. Also, he holds a primary school
+diploma, receives a monthly household income of 2,500€ after taxes and
+transfers and has a full-time job. He defines himself as a left-wing
+person that values the importance of making him own decisions, and to
+live a fun and adventurous life.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Jan is 35 years old. He was born in Germany and goes to the parish every
-Sunday. Also, he holds a primary school diploma, receives a monthly
-income of 1200€ after taxes and has a full-time job. He is not
-interested in politics and values the importance of feeling safe, to fit
-in with others and to respect traditions.
+Jan is 35 years old. He was born in Syria and goes to the parish every
+Sunday. Also, he holds a university degree, receives a monthly household
+income of 6,000€ after taxes and transfers and is unemployed. He defines
+himself as a politically moderate person that values the importance of
+reaching personal achievements and to be in charge
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sophia is 45 years old. She was born in Syria and goes to the moske
-every Friday. Also, she holds a university degree, receives a monthly
-income of 1200€ after taxes and has a full-time job. She defines herself
-as a politically moderate person that values the importance of being be
-tolerant and to help people around her
+Sophia is 65 years old. She was born in Germany and does not profess any
+religion. Also, she holds a university degree, receives a monthly
+household income of 850€ after taxes and transfers and has a full-time
+job. She defines herself as a left-wing person that values the
+importance of reaching personal achievements and to be in charge
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sophia is 45 years old. She was born in Germany and does not profess any
-religion. Also, she holds a primary school diploma, receives a monthly
-income of 3700€ after taxes and is unemployed. She defines herself as a
-left-wing person that values the importance of reaching personal
-achievements and to be in charge
+Sophia is 45 years old. She was born in Syria and goes to the parish
+every Sunday. Also, she holds a secondary school diploma, receives a
+monthly household income of 850€ after taxes and transfers and is a
+homemaker. She defines herself as a left-wing person that values the
+importance of making her own decisions, and to live a fun and
+adventurous life.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sophia is 65 years old. She was born in Germany, comes from a Turkish
-family and goes to the synagogue every Saturday. Also, she holds a
-primary school diploma, receives a monthly income of 3700€ after taxes
-and is a homemaker. She defines herself as a politically moderate person
-that values the importance of feeling safe, to fit in with others and to
-respect traditions.
+Jan is 65 years old. He was born in Germany, comes from a Turkish family
+and goes to the synagogue every Saturday. Also, he holds a university
+degree, receives a monthly household income of 2,500€ after taxes and
+transfers and is unemployed. He defines himself as a politically
+moderate person that values the importance of feeling safe, to fit in
+with others and to respect traditions.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 35 years old. He was born in Syria and does not profess any
+religion. Also, he holds a university degree, receives a monthly
+household income of 850€ after taxes and transfers and is unemployed. He
+is not interested in politics and values the importance of being be
+tolerant and to help people around him
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Sophia is 45 years old. She was born in Syria and goes to the synagogue
-every Saturday. Also, she holds a university degree, receives a monthly
-income of 1200€ after taxes and has a full-time job. She is not
-interested in politics and values the importance of reaching personal
-achievements and to be in charge
+every Saturday. Also, she holds a secondary school diploma, receives a
+monthly household income of 850€ after taxes and transfers and is a
+homemaker. She is not interested in politics and values the importance
+of reaching personal achievements and to be in charge
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 45 years old. He was born in Germany, comes from a Turkish family
+and goes to the parish every Sunday. Also, he holds a secondary school
+diploma, receives a monthly household income of 850€ after taxes and
+transfers and is unemployed. He defines himself as a left-wing person
+that values the importance of making him own decisions, and to live a
+fun and adventurous life.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 65 years old. She was born in Germany, comes from a Turkish
+family and goes to the synagogue every Saturday. Also, she holds a
+primary school diploma, receives a monthly household income of 850€
+after taxes and transfers and is a homemaker. She defines herself as a
+politically moderate person that values the importance of feeling safe,
+to fit in with others and to respect traditions.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 35 years old. He was born in Germany, comes from a Turkish family
+and goes to the synagogue every Saturday. Also, he holds a university
+degree, receives a monthly household income of 2,500€ after taxes and
+transfers and is a homemaker. He defines himself as a right-wing person
+that values the importance of making him own decisions, and to live a
+fun and adventurous life.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 65 years old. He was born in Syria and goes to the synagogue
+every Saturday. Also, he holds a secondary school diploma, receives a
+monthly household income of 6,000€ after taxes and transfers and has a
+full-time job. He defines himself as a left-wing person that values the
+importance of being be tolerant and to help people around him
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 35 years old. He was born in Germany, comes from a Turkish family
+and goes to the moske every Friday. Also, he holds a secondary school
+diploma, receives a monthly household income of 850€ after taxes and
+transfers and has a full-time job. He defines himself as a left-wing
+person that values the importance of feeling safe, to fit in with others
+and to respect traditions.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Sophia is 65 years old. She was born in Germany, comes from a Turkish
 family and goes to the moske every Friday. Also, she holds a primary
-school diploma, receives a monthly income of 3700€ after taxes and is a
-homemaker. She is not interested in politics and values the importance
-of making her own decisions, and to live a fun and adventurous life.
+school diploma, receives a monthly household income of 6,000€ after
+taxes and transfers and is a homemaker. She is not interested in
+politics and values the importance of making her own decisions, and to
+live a fun and adventurous life.
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Jan is 35 years old. He was born in Germany, comes from a Turkish family
-and goes to the parish every Sunday. Also, he holds a university degree,
-receives a monthly income of 2400€ after taxes and is a homemaker. He
-defines himself as a politically moderate person that values the
+Sophia is 35 years old. She was born in Germany and goes to the
+synagogue every Saturday. Also, she holds a secondary school diploma,
+receives a monthly household income of 2,500€ after taxes and transfers
+and is unemployed. She defines herself as a right-wing person that
+values the importance of making her own decisions, and to live a fun and
+adventurous life.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 35 years old. She was born in Germany and goes to the moske
+every Friday. Also, she holds a primary school diploma, receives a
+monthly household income of 2,500€ after taxes and transfers and has a
+full-time job. She defines herself as a right-wing person that values
+the importance of reaching personal achievements and to be in charge
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 65 years old. He was born in Germany and goes to the synagogue
+every Saturday. Also, he holds a secondary school diploma, receives a
+monthly household income of 850€ after taxes and transfers and is a
+homemaker. He defines himself as a left-wing person that values the
+importance of being be tolerant and to help people around him
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 65 years old. She was born in Germany, comes from a Turkish
+family and goes to the moske every Friday. Also, she holds a primary
+school diploma, receives a monthly household income of 850€ after taxes
+and transfers and is a homemaker. She is not interested in politics and
+values the importance of making her own decisions, and to live a fun and
+adventurous life.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 45 years old. He was born in Germany and goes to the moske every
+Friday. Also, he holds a primary school diploma, receives a monthly
+household income of 850€ after taxes and transfers and is unemployed. He
+is not interested in politics and values the importance of making him
+own decisions, and to live a fun and adventurous life.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 65 years old. He was born in Germany and goes to the moske every
+Friday. Also, he holds a university degree, receives a monthly household
+income of 6,000€ after taxes and transfers and has a full-time job. He
+is not interested in politics and values the importance of making him
+own decisions, and to live a fun and adventurous life.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 65 years old. He was born in Germany and goes to the synagogue
+every Saturday. Also, he holds a university degree, receives a monthly
+household income of 6,000€ after taxes and transfers and has a full-time
+job. He defines himself as a politically moderate person that values the
+importance of feeling safe, to fit in with others and to respect
+traditions.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 45 years old. She was born in Germany, comes from a Turkish
+family and goes to the synagogue every Saturday. Also, she holds a
+secondary school diploma, receives a monthly household income of 2,500€
+after taxes and transfers and is unemployed. She is not interested in
+politics and values the importance of reaching personal achievements and
+to be in charge
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jan is 45 years old. He was born in Germany, comes from a Turkish family
+and goes to the moske every Friday. Also, he holds a secondary school
+diploma, receives a monthly household income of 850€ after taxes and
+transfers and is unemployed. He defines himself as a politically
+moderate person that values the importance of being be tolerant and to
+help people around him
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 45 years old. She was born in Germany and does not profess any
+religion. Also, she holds a university degree, receives a monthly
+household income of 2,500€ after taxes and transfers and is a homemaker.
+She defines herself as a right-wing person that values the importance of
+feeling safe, to fit in with others and to respect traditions.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 65 years old. She was born in Syria and goes to the parish
+every Sunday. Also, she holds a primary school diploma, receives a
+monthly household income of 850€ after taxes and transfers and is
+unemployed. She is not interested in politics and values the importance
+of feeling safe, to fit in with others and to respect traditions.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sophia is 65 years old. She was born in Syria and goes to the moske
+every Friday. Also, she holds a primary school diploma, receives a
+monthly household income of 850€ after taxes and transfers and is
+unemployed. She defines herself as a right-wing person that values the
 importance of reaching personal achievements and to be in charge
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sophia is 65 years old. She was born in Syria and goes to the synagogue
-every Saturday. Also, she holds a secondary school diploma, receives a
-monthly income of 2400€ after taxes and has a full-time job. She defines
-herself as a left-wing person that values the importance of being be
-tolerant and to help people around her
+Sophia is 35 years old. She was born in Germany and goes to the
+synagogue every Saturday. Also, she holds a secondary school diploma,
+receives a monthly household income of 6,000€ after taxes and transfers
+and is unemployed. She defines herself as a left-wing person that values
+the importance of being be tolerant and to help people around her
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Sophia is 35 years old. She was born in Germany and goes to the parish
-every Sunday. Also, she holds a primary school diploma, receives a
-monthly income of 2400€ after taxes and has a full-time job. She is not
-interested in politics and values the importance of feeling safe, to fit
-in with others and to respect traditions.
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sophia is 45 years old. She was born in Syria and goes to the moske
-every Friday. Also, she holds a university degree, receives a monthly
-income of 2400€ after taxes and has a full-time job. She defines herself
-as a politically moderate person that values the importance of being be
-tolerant and to help people around her
+Jan is 35 years old. He was born in Germany and goes to the synagogue
+every Saturday. Also, he holds a primary school diploma, receives a
+monthly household income of 850€ after taxes and transfers and has a
+full-time job. He defines himself as a left-wing person that values the
+importance of being be tolerant and to help people around him
 </td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+<div id="outcome" class="section level1">
+<h1>Outcome</h1>
 </div>
 
 
