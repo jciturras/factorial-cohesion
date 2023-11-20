@@ -165,7 +165,6 @@ df_vig <-
     df_vig %>% 
     mutate(vig_text = paste(gender, age, migration, religion,education, income, employment_status,political_orientation,cultural_values)) %>% 
     ungroup()
-
 df_vig$vig_text <-
   ifelse(
     df_vig$gender == "Sophia",
@@ -251,7 +250,6 @@ df_vig$vig_text <-
     no = df_vig$vig_text
   )
 
-
 df_vig %>% 
   select(vig_text) %>% 
   mutate(Example=paste(vig_text)) %>% 
@@ -261,5 +259,41 @@ df_vig %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-# Outcome
+```{r}
+#replace jan or sophia for Person + letter representing the vignette 
+df_vig$vig_number  <-
+  car::recode(df_vig$vig,
+              recodes = 
+                "1='The first person ';
+              2='The second person ';3='The third person ';
+              4='The fourth person ';5='The fifth person ';
+              6='The sixth person ';7='The seventh person ';
+              8='The eighth person ';9='The ninth person ';
+              10='The tenth person '")
+
+
+table(df_vig$vig)
+table(df_vig$vig_number)
+
+df_vig$vig_text_noname <-
+  df_vig$vig_text #clone the gendered vignettes with names
+df_vig$vig_text_noname <-
+  stringi::stri_replace_all(df_vig$vig_text_noname,
+                            regex = "Jan ",
+                            replacement = df_vig$vig_number)
+df_vig$vig_text_noname <-
+  stringi::stri_replace_all(df_vig$vig_text_noname,
+                            regex = "Sophia ",
+                            replacement = df_vig$vig_number)
+df_vig$vig_text_noname
+
+# Check if the character string contains "Jan" or "Sophia"
+table(grepl("Jan", df_vig$vig_text_noname))
+table(grepl("Sophia", df_vig$vig_text_noname))
+```
+
+```{r}
+df_vig %>% select(obs:vig,vig_text_noname) %>% 
+  xlsx::write.xlsx(file = "../output/vignettes.xlsx")
+```
 
