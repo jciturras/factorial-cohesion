@@ -293,7 +293,24 @@ table(grepl("Sophia", df_vig$vig_text_noname))
 ```
 
 ```{r}
-df_vig %>% select(obs:vig,vig_text_noname) %>% 
+devtools::install_github("zumbov2/deeplr")
+my_key <- "8aa9d9db-f3bd-fe6e-089e-8e16786ad7ab:fx"
+
+langs <- deeplr::available_languages2(my_key)
+
+df_vig$vig_text_noname_DE <- df_vig$vig_text_noname
+
+df_vig$vig_text_noname_DE <-
+deeplr::translate2(
+  text = df_vig$vig_text_noname,
+  target_lang = "DE",
+  auth_key = my_key
+  )
+```
+
+
+```{r}
+df_vig %>% select(obs:vig,vig_text_noname,vig_text_noname_DE) %>% 
   xlsx::write.xlsx(file = "../output/vignettes.xlsx")
 ```
 
