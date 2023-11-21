@@ -256,15 +256,15 @@ df_vig %>%
       ),
       income = recode(
         income,
-        `1` = "850€.",
-        `2` = "2,500€.",
-        `3` = "6,000€.",
+        `1` = "850€",
+        `2` = "2,500€",
+        `3` = "6,000€",
       ),
       employment_status = recode(
         employment_status,
         `1` = "erwerbstätig",
         `2` = "arbeitslos",
-        `3` = "Hausmann"
+        `3` = "arbeitslos"
       ),
       political_orientation = recode(
         political_orientation,
@@ -358,54 +358,45 @@ df_vig_DE$religion <-
      df_vig_DE$religion
   )
 
-sjmisc::frq(df_vig_DE$religion)
-
-table(df_vig_DE$gender=="weiblich" & 
-        df_vig_DE$employment_status =="Hausmann")
-
-df_vig_DE$employment_status <-
-  ifelse(
-    df_vig_DE$gender=="weiblich" & df_vig_DE$employment_status =="Hausmann",
-    yes = "Hausfrau", #woman-Houselabour
-     df_vig_DE$employment_status
-  )
-sjmisc::frq(df_vig_DE$employment_status)
+table(df_vig_DE$religion)
 ```
+
+
 
 ```{r}
 "Person [ID] ist [Geschlecht] und [Alter] Jahre alt. Sie ist in [Migrationshintergrund] und ist [Religion (+Geschlecht)]. Person [ID] hat [Bildung + (Migrationshintergrund)] absolviert, ist [Erwerbsstatus (+Geschlecht)] und verfügt über ein monatliches Einkommen von [Einkommen]. Sie versteht sich selbst als politisch [Polititische Orientierung]. Es ist Person [ID] wichtig, [Wertorientierung]."
 
-df_vig_DE$vig_text_DE <-
-  paste("Person",df_vig_DE$letter,"ist",df_vig_DE$gender,"und",df_vig_DE$age,"Sie ist in",df_vig_DE$migration,"und ist",df_vig_DE$religion,
-      "Person",df_vig_DE$letter,"hat",df_vig_DE$education,"absolviert, ist",df_vig_DE$employment_status,"und verfügt über ein monatliches Einkommen von",
-      df_vig_DE$income,"Sie versteht sich selbst als politisch",df_vig_DE$political_orientation,
-      "Es ist Person",df_vig_DE$letter,"wichtig",df_vig_DE$cultural_values)
+df_vig_EN$vig_text_EN <- 
+paste("Person",df_vig_EN$letter,"ist",df_vig_EN$gender,"und",df_vig_EN$age,"Sie ist in",df_vig_EN$migration,"und ist",df_vig_EN$religion,
+      "Person",df_vig_EN$letter,"hat",df_vig_EN$education,"absolviert, ist",df_vig_EN$income,"at",df_vig_EN$his_her,"disposal.",
+      df_vig_EN$he_she,"sees",df_vig_EN$himself_herself,"politically",df_vig_EN$political_orientation,
+      "To person",df_vig_EN$letter,"it is important to",df_vig_EN$cultural_values)
+```
+
+
+
+
+
+
+```{r}
+devtools::install_github("zumbov2/deeplr")
+my_key <- "8aa9d9db-f3bd-fe6e-089e-8e16786ad7ab:fx"
+
+langs <- deeplr::available_languages2(my_key)
+
+df_vig$vig_text_noname_DE <- df_vig$vig_text_noname
+
+df_vig$vig_text_noname_DE <-
+deeplr::translate2(
+  text = df_vig$vig_text_noname,
+  target_lang = "DE",
+  auth_key = my_key
+  )
 ```
 
 
 ```{r}
-df_vig_DE %>% 
-  xlsx::write.xlsx(file = "../output/vignettes_DE.xlsx",row.names = F)
-
-df_vig_EN %>% 
-  xlsx::write.xlsx(file = "../output/vignettes_EN.xlsx",row.names = F)
+df_vig %>% select(obs:vig,vig_text_noname,vig_text_noname_DE) %>% 
+  xlsx::write.xlsx(file = "../output/vignettes.xlsx")
 ```
-
-
-```{r eval=FALSE, include=FALSE}
-# devtools::install_github("zumbov2/deeplr")
-# my_key <- "8aa9d9db-f3bd-fe6e-089e-8e16786ad7ab:fx"
-# 
-# langs <- deeplr::available_languages2(my_key)
-# 
-# df_vig$vig_text_noname_DE <- df_vig$vig_text_noname
-# 
-# df_vig$vig_text_noname_DE <-
-# deeplr::translate2(
-#   text = df_vig$vig_text_noname,
-#   target_lang = "DE",
-#   auth_key = my_key
-#   )
-```
-
 
