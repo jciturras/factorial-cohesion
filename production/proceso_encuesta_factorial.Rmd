@@ -108,7 +108,7 @@ df_vig %>%
       gender = recode(gender, `1` = "man", `2` = "woman"),
       age = recode(
         age,
-        `1` = "35 years old.",
+        `1` = "25 years old.",
         `2` = "45 years old.",
         `3` = "65 years old."
       ),
@@ -231,7 +231,7 @@ df_vig %>%
       gender = recode(gender, `1` = "männlich", `2` = "weiblich"),
       age = recode(
         age,
-        `1` = "35",
+        `1` = "25",
         `2` = "45",
         `3` = "65"
       ),
