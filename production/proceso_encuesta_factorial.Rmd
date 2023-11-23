@@ -250,9 +250,9 @@ df_vig %>%
       ),
       education  = recode(
         education,
-        `1` = "nach dem Hauptschulabschluss eine Lehre,",
-        `2` = "nach dem Realschulabschluss eine Berufsausbildung,",
-        `3` = "nach dem Abitur ein Studium,",
+        `1` = "nach dem Hauptschulabschluss eine Lehre",
+        `2` = "nach dem Realschulabschluss eine Berufsausbildung",
+        `3` = "nach dem Abitur ein Studium",
       ),
       income = recode(
         income,
@@ -288,33 +288,33 @@ df_vig %>%
 
 table(df_vig_DE$education)
 table(df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" & 
-        df_vig_DE$education =="nach dem Hauptschulabschluss eine Lehre,")
+        df_vig_DE$education =="nach dem Hauptschulabschluss eine Lehre")
 
 table(df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" & 
-        df_vig_DE$education =="nach dem Realschulabschluss eine Berufsausbildung,")
+        df_vig_DE$education =="nach dem Realschulabschluss eine Berufsausbildung")
 
 table(df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" & 
-        df_vig_DE$education =="nach dem Abitur ein Studium,")
+        df_vig_DE$education =="nach dem Abitur ein Studium")
 
 df_vig_DE$education <-
   ifelse(
     df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" &
-      df_vig_DE$education =="nach dem Hauptschulabschluss eine Lehre,",
-    yes = "eine einfache Berufsausbildung,", #level low
+      df_vig_DE$education =="nach dem Hauptschulabschluss eine Lehre",
+    yes = "eine einfache Berufsausbildung", #level low
      df_vig_DE$education
   )
 
 df_vig_DE$education <-
   ifelse(
     df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" &
-      df_vig_DE$education =="nach dem Realschulabschluss eine Berufsausbildung,",
-    yes = "eine qualifizierte Berufsausbildung,", #level middle
+      df_vig_DE$education =="nach dem Realschulabschluss eine Berufsausbildung",
+    yes = "eine qualifizierte Berufsausbildung", #level middle
     df_vig_DE$education
   )
 df_vig_DE$education <-
   ifelse(
     df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" &
-      df_vig_DE$education =="nach dem Abitur ein Studium,",
+      df_vig_DE$education =="nach dem Abitur ein Studium",
     yes = "ein Hochschulstudium,", #level high
     df_vig_DE$education
   )
