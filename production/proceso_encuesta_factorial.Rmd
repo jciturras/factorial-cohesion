@@ -585,6 +585,13 @@ df_vig_ESP %>%
   xlsx::write.xlsx(file = "output/vignettes_ESP.xlsx",row.names = F)
 ```
 
+- Imagina que conoces a la persona [ID] a través de tu círculo de conocidos. ¿Qué probabilidades hay de que te lleves bien con la persona [ID]?
+- Imagina que te enfrentas a una tarea que no puedes realizar por ti mismo. ¿Con qué probabilidad pedirías ayuda a la persona [ID]?
+- Imagina que la persona [ID] se muda a tu barrio. ¿Qué probabilidades hay de que entres en conflicto con esa persona?
+
+Test link: https://kunden.infas-online.de/q1/SurveyServlet 
+
+
 ```{r eval=FALSE, include=FALSE}
 # devtools::install_github("zumbov2/deeplr")
 # my_key <- "8aa9d9db-f3bd-fe6e-089e-8e16786ad7ab:fx"
