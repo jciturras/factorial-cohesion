@@ -1,0 +1,10 @@
+name: test-factorial-cohesion
+title:
+username: juitsa
+account: juitsa
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12870139
+bundleId: 9162664
+url: https://juitsa.shinyapps.io/test-factorial-cohesion/
+version: 1
