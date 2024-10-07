@@ -1,0 +1,611 @@
+---
+title: "Factorial desing"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+author: Julio Iturra
+output: 
+  html_document:
+     theme: flatly
+     highlight: tango
+     toc: true
+     toc_float: true
+     toc_depth: 2
+     number_sections: false
+     code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+# Vignette design
+
+1. [Draft Google Docs](https://docs.google.com/document/d/1Tn_vZTNaxIOeK5lHcQkPWt3Knw_OqKIEe7pPf19CI4c/edit) 
+2. Code in SAS (https://odamid-euw1.oda.sas.com/)
+3. Macro (https://support.sas.com/rnd/app/macros/MktEx/MktEx.pdf)
+
+```{r, eval=FALSE, include=TRUE}
+%mktruns(2 3 3 4 3 3 3 4 4)
+Saturated      = 21                                       
+Full Factorial = 31,104                                   
+Some Reasonable                      Cannot Be            
+   Design Sizes       Violations     Divided By           
+            144 *              0                          
+             72                3     16                   
+            216                3     16                   
+             36                6      8 16                
+            108                6      8 16                
+            180                6      8 16                
+             48               10      9                   
+             96               10      9                   
+            192               10      9                   
+             24               13      9 16                
+             21 S             40      2  4  6  8  9 12 16 
+ - 100% Efficient design can be made with the MktEx macro.
+ - Saturated Design - The smallest design that can be made.
+   Note that the saturated design is not one of the       
+   recommended designs for this problem.  It is shown     
+   to provide some context for the recommended sizes.     
+
+```
+
+```{r, eval=FALSE, include=TRUE}
+%mktex(2 3 3 4 3 3 3 4 4, n=144, seed=2624)
+     Design    Row,Col  D-Efficiency  D-Efficiency  Notes                                    
+     ----------------------------------------------------------                              
+          1      Start      100.0000      100.0000  Tab                                      
+          1        End      100.0000
+```
+
+
+```{r, eval=FALSE, include=TRUE}
+%mktblock(data=Randomized, nblocks=10, seed=2624) # 10 decks
+/* 10 decks, 4 decks with 15 vignettes and 6 decks with 14 vignettes  */
+
+%mktblock(data=Randomized, nblocks=15, seed=2624) # 15 decks
+/* 15 decks, 9 decks with 10 vignettes and 6 decks with 9 vignettes  */
+```
+
+
+# Generation of the vignettes
+
+- First we load the file containing the vignette information generated in SAS.
+
+```{r,warning=FALSE,message=F}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(readxl,dplyr,knitr,kableExtra)
+
+# df_vig <- xlsx::read.xlsx(file = "../input/vignetas.xlsx",sheetIndex = 1)
+df_vig <- xlsx::read.xlsx(file = "../input/vignetas15.xlsx",sheetIndex = 1)
+
+colnames = c("obs","deck","vig","gender", "age", "migration", "religion", "education", "employment_status", "income", "political_orientation", "cultural_values")
+names(df_vig) <- colnames
+names(df_vig)
+vig_dat<- df_vig %>% mutate(deck_vig=paste0(deck,vig)) %>% select(obs,deck,vig,deck_vig,everything())
+```
+- Save the vignette information for later use in the analysis.
+
+```{r,warning=FALSE}
+save(vig_dat,file = here::here("input/data/proc/vig_dim.RData"))
+```
+
+
+# ENG
+
+Person [ID] is [Gender] and [Age] years old. [She/he] was born in [Migration Background] an is [Religion]. Person [ID] has completed [Education], is [Employment Status] and has a monthly income of [Income] at [her/his] disposal. [She/he] sees [herself/himself] politically [Political Orientation]. To person [ID], it is important to [Value Orientation].
+
+```{r ENG,warning=FALSE,message=F}
+df_vig_EN <- 
+df_vig %>% 
+    mutate(
+      letter = recode(
+        vig,
+        `1` = "A",
+        `2` = "B",
+        `3` = "C",
+        `4` = "D",
+        `5` = "E",
+        `6` = "F",
+        `7` = "G",
+        `8` = "H",
+        `9` = "I",
+        `10` = "J",        
+      ),
+      gender = recode(gender, `1` = "man", `2` = "woman"),
+      age = recode(
+        age,
+        `1` = "25 years old.",
+        `2` = "45 years old.",
+        `3` = "65 years old."
+      ),
+      migration  = recode(
+        migration,
+        `1` = "Germany, has German parents",
+        `2` = "Germany, has Turkish parents",
+        `3` = "Syria, came to Germany"
+      ),
+      religion = recode(
+        religion,
+        `1` = "a devout Christian.",
+        `2` = "a devout Muslim",
+        `3` = "a devout Jew.",
+        `4` = "not religious."
+      ),
+      education  = recode(
+        education,
+        `1` = "did an apprenticeship after finishing secondary school,",
+        `2` = "has completed vocational training after finishing secondary school,",
+        `3` = "has studied at university after graduating from high school,",
+      ),
+      income = recode(
+        income,
+        `1` = "850€",
+        `2` = "2,500€",
+        `3` = "6,000€",
+      ),
+      employment_status = recode(
+        employment_status,
+        `1` = "employed full-time",
+        `2` = "unemployed",
+        `3` = "a homemaker"
+      ),
+      political_orientation = recode(
+        political_orientation,
+        `1` = "standing on the left.",
+        `2` = "standing in the middle.",
+        `3` = "standing on the right.",
+        `4` = "as uninterested."
+      ),
+      cultural_values = recode(
+        cultural_values,
+        `1` = "being tolerant and to help people around.",
+        `2` = "feel safe, to fit in with others and to respect traditions.",
+        `3` = "reach personal achievements and to be in charge.",
+        `4` = "make your own decisions and lead an entertaining and adventurous life."
+      )      
+    )
+
+table(df_vig_EN$education)
+table(df_vig_EN$migration=="Syria,came to Germany" & df_vig_EN$education =="has completed vocational training after finishing secondary school,")
+
+df_vig_EN$education <-
+  ifelse(
+    df_vig_EN$migration == "Syria,came to Germany" &
+      df_vig_EN$education == "has completed vocational training after finishing secondary school,",
+    yes = "qualified vocational training,",
+    df_vig_EN$education
+  )
+table(df_vig_EN$education)
+
+df_vig_EN$education <-
+  ifelse(
+    df_vig_EN$migration=="Syria,came to Germany" & 
+      df_vig_EN$education =="has studied at university after graduating from high school,",
+    yes = "a university degree course,",
+    df_vig_EN$education
+  )
+
+table(df_vig_EN$education)
+
+df_vig_EN$he_she <- ifelse(df_vig_EN$gender=="man",yes = "He",no = "She")
+df_vig_EN$himself_herself <- ifelse(df_vig_EN$gender=="man",yes = "himself",no = "herself")
+df_vig_EN$his_her <- ifelse(df_vig_EN$gender=="man",yes = "his",no = "her")
+
+
+
+# sjmisc::flat_table(table(df_vig_EN$income,df_vig_EN$employment_status))
+# df_vig_EN %>% select(gender:cultural_values) %>% polycor::hetcor()
+
+df_vig_EN %>% group_by(deck) %>% 
+  summarise(vig=n()) %>% 
+  kable(col.names = c("Deck","Number of vignettes")) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r text-ENG}
+"Person [ID] is [Gender] and [Age] years old. [She/he] was born in [Migration Background] an is [Religion]. Person [ID] has completed [Education], is [Employment Status] and has a monthly income of [Income] at [her/his] disposal. [She/he] sees [herself/himself] politically [Political Orientation]. To person [ID], it is important to [Value Orientation]."
+
+df_vig_EN$vig_text_EN <- 
+paste("Person",df_vig_EN$letter,"is a",df_vig_EN$gender,"and is",df_vig_EN$age,df_vig_EN$he_she,"was born in",df_vig_EN$migration,"and is",df_vig_EN$religion,
+      "Person",df_vig_EN$letter,df_vig_EN$education,"is",df_vig_EN$employment_status,"and has a monthly income of",df_vig_EN$income,"at",df_vig_EN$his_her,"disposal.",
+      df_vig_EN$he_she,"sees",df_vig_EN$himself_herself,"politically",df_vig_EN$political_orientation,
+      "To person",df_vig_EN$letter,"it is important to",df_vig_EN$cultural_values)
+```
+
+
+# DEU
+
+Person [ID] ist [Geschlecht] und [Alter] Jahre alt. Sie ist in [Migrationshintergrund] und ist [Religion (+Geschlecht)]. Person [ID] hat [Bildung + (Migrationshintergrund)] absolviert, ist [Erwerbsstatus (+Geschlecht)] und verfügt über ein monatliches Einkommen von [Einkommen]. Sie versteht sich selbst als politisch [Polititische Orientierung]. Es ist Person [ID] wichtig, [Wertorientierung].
+
+```{r DEU,warning=FALSE,message=F}
+df_vig_DE <- 
+df_vig %>% 
+    mutate(
+      letter = recode(
+        vig,
+        `1` = "A",
+        `2` = "B",
+        `3` = "C",
+        `4` = "D",
+        `5` = "E",
+        `6` = "F",
+        `7` = "G",
+        `8` = "H",
+        `9` = "I",
+        `10` = "J",        
+      ),
+      gender = recode(gender, `1` = "männlich", `2` = "weiblich"),
+      age = recode(
+        age,
+        `1` = "25",
+        `2` = "45",
+        `3` = "65"
+      ),
+      migration  = recode(
+        migration,
+        `1` = "Deutschland geboren, hat deutsche Eltern",
+        `2` = "Deutschland geboren, hat türkische Eltern",
+        `3` = "Syrien geboren, nach Deutschland gekommen"
+      ),
+      religion = recode(
+        religion,
+        `1` = "gläubiger Christ.",
+        `2` = "gläubiger Muslim.",
+        `3` = "gläubiger Jude.",
+        `4` = "nicht religiös."
+      ),
+      education  = recode(
+        education,
+        `1` = "nach dem Hauptschulabschluss eine Lehre",
+        `2` = "nach dem Realschulabschluss eine Berufsausbildung",
+        `3` = "nach dem Abitur ein Studium",
+      ),
+      income = recode(
+        income,
+        `1` = "850€.",
+        `2` = "2,500€.",
+        `3` = "6,000€.",
+      ),
+      employment_status = recode(
+        employment_status,
+        `1` = "erwerbstätig",
+        `2` = "arbeitslos",
+        `3` = "Hausmann"
+      ),
+      political_orientation = recode(
+        political_orientation,
+        `1` = "linksstehend.",
+        `2` = "in der Mitte stehend.",
+        `3` = "rechtsstehend.",
+        `4` = "uninteressiert."
+      ),
+      cultural_values = recode(
+        cultural_values,
+        `1` = "tolerant zu sein und den Menschen in ihrer Umgebung zu helfen.",
+        `2` = "sich sicher zu fühlen, sich anderen anzupassen und Traditionen zu respektieren.",
+        `3` = "persönliche Erfolge zu erzielen und das Sagen zu haben.",
+        `4` = "eigene Entscheidungen zu treffen und ein unterhaltsames und abenteuerliches Leben zu führen."
+      )      
+    )
+
+"nach dem Hauptschulabschluss eine Lehre,"
+"nach dem Realschulabschluss eine Berufsausbildung,"
+"nach dem Abitur ein Studium,"
+
+table(df_vig_DE$education)
+table(df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" & 
+        df_vig_DE$education =="nach dem Hauptschulabschluss eine Lehre")
+
+table(df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" & 
+        df_vig_DE$education =="nach dem Realschulabschluss eine Berufsausbildung")
+
+table(df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" & 
+        df_vig_DE$education =="nach dem Abitur ein Studium")
+
+df_vig_DE$education <-
+  ifelse(
+    df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" &
+      df_vig_DE$education =="nach dem Hauptschulabschluss eine Lehre",
+    yes = "eine einfache Berufsausbildung", #level low
+     df_vig_DE$education
+  )
+
+df_vig_DE$education <-
+  ifelse(
+    df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" &
+      df_vig_DE$education =="nach dem Realschulabschluss eine Berufsausbildung",
+    yes = "eine qualifizierte Berufsausbildung", #level middle
+    df_vig_DE$education
+  )
+df_vig_DE$education <-
+  ifelse(
+    df_vig_DE$migration=="Syrien geboren, nach Deutschland gekommen" &
+      df_vig_DE$education =="nach dem Abitur ein Studium",
+    yes = "ein Hochschulstudium,", #level high
+    df_vig_DE$education
+  )
+
+"gläubiger Christ."
+"gläubiger Muslim."
+"gläubiger Jude."
+"nicht religiös."
+
+table(df_vig_DE$religion)
+table(df_vig_DE$gender=="weiblich" & 
+        df_vig_DE$religion =="gläubiger Christ.")
+
+table(df_vig_DE$gender=="weiblich" & 
+        df_vig_DE$religion =="gläubiger Muslim.")
+
+table(df_vig_DE$gender=="weiblich" & 
+        df_vig_DE$religion =="gläubiger Jude.")
+
+table(df_vig_DE$gender=="weiblich" & 
+        df_vig_DE$religion =="nicht religiös.")
+
+df_vig_DE$religion <-
+  ifelse(
+    df_vig_DE$gender=="weiblich" & df_vig_DE$religion =="gläubiger Christ.",
+    yes = "gläubige Christin.", #Woman-Christian
+     df_vig_DE$religion
+  )
+
+df_vig_DE$religion <-
+  ifelse(
+    df_vig_DE$gender=="weiblich" & df_vig_DE$religion =="gläubiger Muslim.",
+    yes = "gläubige Muslima.", #woman-Muslim
+     df_vig_DE$religion
+  )
+
+df_vig_DE$religion <-
+  ifelse(
+    df_vig_DE$gender=="weiblich" & df_vig_DE$religion =="gläubiger Jude.",
+    yes = "gläubige Jüdin.", #woman-Muslim
+     df_vig_DE$religion
+  )
+
+sjmisc::frq(df_vig_DE$religion)
+
+table(df_vig_DE$gender=="weiblich" & 
+        df_vig_DE$employment_status =="Hausmann")
+
+df_vig_DE$employment_status <-
+  ifelse(
+    df_vig_DE$gender=="weiblich" & df_vig_DE$employment_status =="Hausmann",
+    yes = "Hausfrau", #woman-Houselabour
+     df_vig_DE$employment_status
+  )
+sjmisc::frq(df_vig_DE$employment_status)
+```
+
+```{r}
+"Person [ID] ist [Geschlecht] und [Alter] Jahre alt. Sie ist in [Migrationshintergrund] und ist [Religion (+Geschlecht)]. Person [ID] hat [Bildung + (Migrationshintergrund)] absolviert, ist [Erwerbsstatus (+Geschlecht)] und verfügt über ein monatliches Einkommen von [Einkommen]. Sie versteht sich selbst als politisch [Polititische Orientierung]. Es ist Person [ID] wichtig, [Wertorientierung]."
+
+df_vig_DE$vig_text_DE <-
+  paste("Person",df_vig_DE$letter,"ist",df_vig_DE$gender,"und",df_vig_DE$age,"Sie ist in",df_vig_DE$migration,"und ist",df_vig_DE$religion,
+      "Person",df_vig_DE$letter,"hat",df_vig_DE$education,"absolviert, ist",df_vig_DE$employment_status,"und verfügt über ein monatliches Einkommen von",
+      df_vig_DE$income,"Sie versteht sich selbst als politisch",df_vig_DE$political_orientation,
+      "Es ist Person",df_vig_DE$letter,"wichtig",df_vig_DE$cultural_values)
+```
+
+# ESP
+```{r ESP,warning=FALSE,message=F}
+df_vig_ESP <- 
+df_vig %>% 
+    mutate(
+      letter = recode(
+        vig,
+        `1` = "A",
+        `2` = "B",
+        `3` = "C",
+        `4` = "D",
+        `5` = "E",
+        `6` = "F",
+        `7` = "G",
+        `8` = "H",
+        `9` = "I",
+        `10` = "J",        
+      ),
+      gender = recode(gender, `1` = "hombre", `2` = "mujer"),
+      age = recode(
+        age,
+        `1` = "25 años.",
+        `2` = "45 años.",
+        `3` = "65 años."
+      ),
+      migration  = recode(
+        migration,
+        `1` = "Chile, tiene padres Chilenos",
+        `2` = "Chile, tiene padres Peruanos",
+        `3` = "Venezuela, vino a Chile"
+      ),
+      religion = recode(
+        religion,
+        `1` = "católico.",
+        `2` = "evangélico.",
+        `3` = "judío.",
+        `4` = "no religioso."
+      ),
+      education  = recode(
+        education,
+        `1` = "terminó la Educación Básica,",
+        `2` = "terminó la Educación Media,",
+        `3` = "fue a la universidad y obtuvo un título universitario,",
+      ),
+      income = recode(
+        income,
+        `1` = "$250.000",
+        `2` = "$710.000",
+        `3` = "$4.100.000",
+      ),
+      employment_status = recode(
+        employment_status,
+        `1` = "empleado tiempo completo",
+        `2` = "desempleado",
+        `3` = "dueño de casa"
+      ),
+      political_orientation = recode(
+        political_orientation,
+        `1` = "de izquierda.",
+        `2` = "de centro.",
+        `3` = "de derecha.",
+        `4` = "desinteresado."
+      ),
+      cultural_values = recode(
+        cultural_values,
+        `1` = "ser tolerante y ayudar a la gente que te rodea.",
+        `2` = "sentirse seguro, adaptarse a los demás y respetar las tradiciones.",
+        `3` = "alcanzar el éxito personal y estar al mando.",
+        `4` = "tomar tus propias decisiones y llevar una vida divertida y llena de aventuras"
+      )      
+    )
+
+table(df_vig_ESP$education)
+table(df_vig_ESP$migration=="Syria,came to Germany" & df_vig_ESP$education =="has completed vocational training after finishing secondary school,")
+
+# df_vig_EN$education <-
+#   ifelse(
+#     df_vig_EN$migration == "Syria,came to Germany" &
+#       df_vig_EN$education == "has completed vocational training after finishing secondary school,",
+#     yes = "qualified vocational training,",
+#     df_vig_EN$education
+#   )
+# table(df_vig_EN$education)
+# 
+# df_vig_EN$education <-
+#   ifelse(
+#     df_vig_EN$migration=="Syria,came to Germany" & 
+#       df_vig_EN$education =="has studied at university after graduating from high school,",
+#     yes = "a university degree course,",
+#     df_vig_EN$education
+#   )
+# 
+# table(df_vig_EN$education)
+
+df_vig_EN$he_she <- ifelse(df_vig_EN$gender=="man",yes = "He",no = "She")
+df_vig_EN$himself_herself <- ifelse(df_vig_EN$gender=="man",yes = "himself",no = "herself")
+df_vig_EN$his_her <- ifelse(df_vig_EN$gender=="man",yes = "his",no = "her")
+
+
+df_vig_ESP$employment_status <-
+  ifelse(
+    df_vig_ESP$employment_status=="dueño de casa" &
+    df_vig_ESP$gender=="mujer",
+    yes = "dueña de casa",
+    df_vig_ESP$employment_status
+  )
+
+df_vig_ESP$employment_status <-
+  ifelse(
+    df_vig_ESP$employment_status=="empleado tiempo completo" &
+    df_vig_ESP$gender=="mujer",
+    yes = "empleada tiempo completo",
+    df_vig_ESP$employment_status
+  )
+
+df_vig_ESP$employment_status <-
+  ifelse(
+    df_vig_ESP$employment_status=="desempleado" &
+    df_vig_ESP$gender=="mujer",
+    yes = "desempleada",
+    df_vig_ESP$employment_status
+  )
+
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "católico." & df_vig_ESP$gender=="mujer",
+    yes = "católica.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "evangélico." & df_vig_ESP$gender=="mujer",
+    yes = "evangélica.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "judío." & df_vig_ESP$gender=="mujer",
+    yes = "judía.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "no religioso." & df_vig_ESP$gender=="mujer",
+    yes = "no religiosa.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "evangélico." & df_vig_ESP$gender=="mujer",
+    yes = "evangélica.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "judío." & df_vig_ESP$gender=="mujer",
+    yes = "judía.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$religion <-
+  ifelse(df_vig_ESP$religion == "no religioso." & df_vig_ESP$gender=="mujer",
+    yes = "no religiosa.",
+    df_vig_ESP$religion
+  )
+
+df_vig_ESP$es_esta <-
+  ifelse(
+    df_vig_ESP$employment_status %in% c("dueño de casa","dueña de casa"),
+    yes = "es",
+    no = "está"
+  )
+
+# sjmisc::flat_table(table(df_vig_EN$income,df_vig_EN$employment_status))
+# df_vig_EN %>% select(gender:cultural_values) %>% polycor::hetcor()
+
+```
+
+```{r text-ENG}
+"Person [ID] is [Gender] and [Age] years old. [She/he] was born in [Migration Background] an is [Religion]. Person [ID] has completed [Education], is [Employment Status] and has a monthly income of [Income] at [her/his] disposal. [She/he] sees [herself/himself] politically [Political Orientation]. To person [ID], it is important to [Value Orientation]."
+
+df_vig_ESP$vig_text_ESP <- 
+paste("La Persona",df_vig_ESP$letter,"es",df_vig_ESP$gender,"y tiene",df_vig_ESP$age,df_vig_ESP$he_she,"Nació en",df_vig_ESP$migration,"y es",df_vig_ESP$religion,
+      "La Persona",df_vig_ESP$letter,df_vig_ESP$education,df_vig_ESP$es_esta,df_vig_ESP$employment_status,"y tiene unos ingresos mesuales de",df_vig_ESP$income,"a","su","disposición.",
+      df_vig_ESP$he_she,df_vig_ESP$himself_herself,"Se considera políticamente",df_vig_ESP$political_orientation,
+      "Para la persona",df_vig_ESP$letter,"es importante",df_vig_ESP$cultural_values)
+head(df_vig_ESP$vig_text_ESP,10) %>% kable(format = "html") %>% kable_styling()
+
+```
+
+```{r}
+df_vig_DE %>% 
+  xlsx::write.xlsx(file = "output/vignettes_DE.xlsx",row.names = F)
+
+df_vig_EN %>% 
+  xlsx::write.xlsx(file = "output/vignettes_EN.xlsx",row.names = F)
+
+df_vig_ESP %>% 
+  xlsx::write.xlsx(file = "output/vignettes_ESP.xlsx",row.names = F)
+```
+
+- Imagina que conoces a la persona [ID] a través de tu círculo de conocidos. ¿Qué probabilidades hay de que te lleves bien con la persona [ID]?
+- Imagina que te enfrentas a una tarea que no puedes realizar por ti mismo. ¿Con qué probabilidad pedirías ayuda a la persona [ID]?
+- Imagina que la persona [ID] se muda a tu barrio. ¿Qué probabilidades hay de que entres en conflicto con esa persona?
+
+Test link: https://kunden.infas-online.de/q1/SurveyServlet 
+
+
+```{r eval=FALSE, include=FALSE}
+# devtools::install_github("zumbov2/deeplr")
+# my_key <- "8aa9d9db-f3bd-fe6e-089e-8e16786ad7ab:fx"
+# 
+# langs <- deeplr::available_languages2(my_key)
+# 
+# df_vig$vig_text_noname_DE <- df_vig$vig_text_noname
+# 
+# df_vig$vig_text_noname_DE <-
+# deeplr::translate2(
+#   text = df_vig$vig_text_noname,
+#   target_lang = "DE",
+#   auth_key = my_key
+#   )
+```
+
+
