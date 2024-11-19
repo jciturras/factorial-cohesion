@@ -72,7 +72,7 @@ if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(readxl,dplyr,knitr,kableExtra)
 
 # df_vig <- xlsx::read.xlsx(file = "../input/vignetas.xlsx",sheetIndex = 1)
-df_vig <- xlsx::read.xlsx(file = "../input/vignetas15.xlsx",sheetIndex = 1)
+df_vig <- xlsx::read.xlsx(file = "input/vignetas15.xlsx",sheetIndex = 1)
 
 colnames = c("obs","deck","vig","gender", "age", "migration", "religion", "education", "employment_status", "income", "political_orientation", "cultural_values")
 names(df_vig) <- colnames
@@ -430,8 +430,8 @@ df_vig %>%
       ),
       income = recode(
         income,
-        `1` = "$250.000",
-        `2` = "$710.000",
+        `1` = "$500.000",
+        `2` = "$910.000",
         `3` = "$4.100.000",
       ),
       employment_status = recode(
@@ -452,12 +452,9 @@ df_vig %>%
         `1` = "ser tolerante y ayudar a la gente que te rodea.",
         `2` = "sentirse seguro, adaptarse a los demás y respetar las tradiciones.",
         `3` = "alcanzar el éxito personal y estar al mando.",
-        `4` = "tomar tus propias decisiones y llevar una vida divertida y llena de aventuras"
+        `4` = "tomar sus propias decisiones y llevar una vida divertida y llena de aventuras"
       )      
     )
-
-table(df_vig_ESP$education)
-table(df_vig_ESP$migration=="Syria,came to Germany" & df_vig_ESP$education =="has completed vocational training after finishing secondary school,")
 
 # df_vig_EN$education <-
 #   ifelse(
@@ -477,11 +474,6 @@ table(df_vig_ESP$migration=="Syria,came to Germany" & df_vig_ESP$education =="ha
 #   )
 # 
 # table(df_vig_EN$education)
-
-df_vig_EN$he_she <- ifelse(df_vig_EN$gender=="man",yes = "He",no = "She")
-df_vig_EN$himself_herself <- ifelse(df_vig_EN$gender=="man",yes = "himself",no = "herself")
-df_vig_EN$his_her <- ifelse(df_vig_EN$gender=="man",yes = "his",no = "her")
-
 
 df_vig_ESP$employment_status <-
   ifelse(
@@ -550,6 +542,12 @@ df_vig_ESP$religion <-
     df_vig_ESP$religion
   )
 
+df_vig_ESP$cultural_values <-
+  ifelse(df_vig_ESP$cultural_values == "sentirse seguro, adaptarse a los demás y respetar las tradiciones." & df_vig_ESP$gender=="mujer",
+    yes = "sentirse segura, adaptarse a los demás y respetar las tradiciones.",
+    df_vig_ESP$cultural_values
+  )
+
 df_vig_ESP$es_esta <-
   ifelse(
     df_vig_ESP$employment_status %in% c("dueño de casa","dueña de casa"),
@@ -562,34 +560,122 @@ df_vig_ESP$es_esta <-
 
 ```
 
-```{r text-ENG}
-"Person [ID] is [Gender] and [Age] years old. [She/he] was born in [Migration Background] an is [Religion]. Person [ID] has completed [Education], is [Employment Status] and has a monthly income of [Income] at [her/his] disposal. [She/he] sees [herself/himself] politically [Political Orientation]. To person [ID], it is important to [Value Orientation]."
-
+```{r text-ESP}
 df_vig_ESP$vig_text_ESP <- 
 paste("La Persona",df_vig_ESP$letter,"es",df_vig_ESP$gender,"y tiene",df_vig_ESP$age,df_vig_ESP$he_she,"Nació en",df_vig_ESP$migration,"y es",df_vig_ESP$religion,
-      "La Persona",df_vig_ESP$letter,df_vig_ESP$education,df_vig_ESP$es_esta,df_vig_ESP$employment_status,"y tiene unos ingresos mesuales de",df_vig_ESP$income,"a","su","disposición.",
+      "La Persona",df_vig_ESP$letter,df_vig_ESP$education,df_vig_ESP$es_esta,df_vig_ESP$employment_status,"y tiene unos ingresos mensuales de",df_vig_ESP$income,"a","su","disposición.",
       df_vig_ESP$he_she,df_vig_ESP$himself_herself,"Se considera políticamente",df_vig_ESP$political_orientation,
       "Para la persona",df_vig_ESP$letter,"es importante",df_vig_ESP$cultural_values)
-head(df_vig_ESP$vig_text_ESP,10) %>% kable(format = "html") %>% kable_styling()
+head(df_vig_ESP$vig_text_ESP,10) %>%
+  kable(format = "html") %>%
+  kable_styling()
 
 ```
 
-```{r}
-df_vig_DE %>% 
-  xlsx::write.xlsx(file = "output/vignettes_DE.xlsx",row.names = F)
+- Imagina que conoces a la persona [ID] a través de tu círculo de conocidos. ¿Qué probabilidad hay de que te lleves bien con la persona [ID]?
+- Imagina que te enfrentas a una tarea que no puedes realizar por ti mismo. ¿Con qué probabilidad pedirías ayuda a la persona [ID]?
+- Imagina que la persona [ID] se muda a tu barrio. ¿Qué probabilidad hay de que entres en conflicto con esa persona?
 
-df_vig_EN %>% 
-  xlsx::write.xlsx(file = "output/vignettes_EN.xlsx",row.names = F)
+Test link: https://kunden.infas-online.de/q1/SurveyServlet 
+
+
+*Introduction*
+
+En la siguiente sección nos interesa conocer su opinión sobre cómo la gente se encuentra con personas diferentes en situaciones cotidianas. Necesitamos su ayuda para averiguarlo. Se le presentarán descripciones de personas con distintas características como en el siguiente ejemplo:
+- La Persona B es hombre y tiene 25 años. Nació en Chile, tiene padres Chilenos y es católico. La Persona B terminó la Educación Básica, está empleado tiempo completo y tiene unos ingresos mensuales de $250.000 a su disposición. Se considera políticamente desinteresado. Para la persona B es importante sentirse seguro, adaptarse a los demás y respetar las tradiciones.
+Luego de la presentación de cada descripción, se preguntan tres cosas: 
+- Imagina que conoces a la persona B a través de tu círculo de conocidos. ¿Qué probabilidad hay de que te lleves bien con la persona B?"
+- Imagina que te enfrentas a una tarea que no puedes realizar por ti mismo. ¿Con qué probabilidad pedirías ayuda a la persona B?"
+- Imagina que la persona B se muda a tu barrio. ¿Qué probabilidad hay de que entres en conflicto con esa persona?
+Le describiremos 10 personas y usted nos dirá cómo se encontraría con esas personas en la vida cotidiana. Por favor, responda espontáneamente a lo que se le ocurra en el primer momento.
+Esto no es ningún tipo de prueba de conocimiento. Solo nos interesa conocer sus opiniones, por lo que no hay respuestas correctas o incorrectas. 
+
+
+```{r}
+# Template string
+df_vig_ESP$p01 <- "Imagina que conoces a la persona {ID} a través de tu círculo de conocidos. ¿Qué probabilidad hay de que te lleves bien con la persona {ID}?"
+df_vig_ESP$p02 <- "Imagina que te enfrentas a una tarea que no puedes realizar por ti mismo. ¿Con qué probabilidad pedirías ayuda a la persona {ID}?"
+df_vig_ESP$p03 <- "Imagina que la persona {ID} se muda a tu barrio. ¿Qué probabilidad hay de que entres en conflicto con esa persona?"
+
+df_vig_ESP$p01 <- stringi::stri_replace_all(str = df_vig_ESP$p01,regex = "\\{ID\\}",replacement = df_vig_ESP$letter)
+df_vig_ESP$p02 <- stringi::stri_replace_all(str = df_vig_ESP$p02,regex = "\\{ID\\}",replacement = df_vig_ESP$letter)
+df_vig_ESP$p03 <- stringi::stri_replace_all(str = df_vig_ESP$p03,regex = "\\{ID\\}",replacement = df_vig_ESP$letter)
+
+vignetas <- df_vig_ESP %>% 
+  mutate(type="note",
+         name=paste0("deck",deck,"vig",vig),
+         showif=paste0("ran_group == ",deck),
+         optional=NA,
+         # vig_text_ESP=paste0("[",name,"]",vig_text_ESP)
+         ) %>% 
+  select(deck,vig,type,optional,name,showif,label=vig_text_ESP,block_order=letter)
+
+
+p01 <- df_vig_ESP %>% select(deck,vig,label=p01,block_order=letter) %>% 
+  mutate(name=paste0("d",deck,"v",vig,"_p01"),
+         choice1="Nada<br>probable",choice2="Muy<br>probable",
+         type="range_ticks 0,10,1",
+         showif=paste0("ran_group == ",deck),optional=" "
+         # label=paste0("[",name,"] ",label)
+         ) %>% 
+  select(deck,vig,type,name,showif,label,choice1,choice2,block_order)
+
+p02 <- df_vig_ESP %>% select(deck,vig,label=p02,block_order=letter)%>% 
+  mutate(name=paste0("d",deck,"v",vig,"_p02"),
+         choice1="Nada<br>probable",choice2="Muy<br>probable",
+         type="range_ticks 0,10,1",
+         showif=paste0("ran_group == ",deck),optional=" "
+         # label=paste0("[",name,"] ",label)
+         ) %>% 
+  select(deck,vig,type,name,showif,label,choice1,choice2,block_order)
+p03 <- df_vig_ESP %>% select(deck,vig,label=p03,block_order=letter)%>% 
+  mutate(name=paste0("d",deck,"v",vig,"_p03"),
+         choice1="Nada<br>probable",choice2="Muy<br>probable",
+         type="range_ticks 0,10,1",
+         showif=paste0("ran_group == ",deck),optional=" "
+         # label=paste0("[",name,"] ",label)         
+         ) %>% 
+  select(deck,vig,type,name,showif,label,choice1,choice2,block_order)
+
+submit <- df_vig_ESP %>% 
+  mutate(type="submit",label="Siguiente",name=paste0("d",deck,"v",vig,"submit"),block_order=letter,showif=paste0("ran_group == ",deck)) %>% 
+  select(deck,vig,type,label,name,showif,block_order) 
+# %>% 
+#   filter(vig %in% c(3,6,9)) 
+
+template_formr <- 
+  bind_rows(vignetas,p01,p02,p03,submit) %>% 
+  arrange(deck,vig) %>% 
+  mutate(item_order="") %>% 
+  select(deck,vig,type,optional,name,showif,label,choice1,choice2,block_order,item_order) %>% 
+  add_row(.before = 1,type = "random 1,15",name = "ran_group")
+# template_formr$item_order <- template_formr$vig  
+# template_formr$block_order <-  toupper(sapply(template_formr$deck, function(i) letters[i]))
+# 
+# template_formr$showif <- NA
+
+# template_formr$showif <- stringi::stri_replace_all(str = template_formr$showif,replacement = "")
+# 
+# template_formr$showif <- "shuffle$group == 15" 
+
+template_formr %>% 
+  xlsx::write.xlsx(file = "output/formr_vignetas_ESP.xlsx",row.names = F,showNA = F)
+```
+
+
+# Save vignetes
+
+```{r}
+# df_vig_DE %>% 
+#   xlsx::write.xlsx(file = "output/vignettes_DE.xlsx",row.names = F)
+# 
+# df_vig_EN %>% 
+#   xlsx::write.xlsx(file = "output/vignettes_EN.xlsx",row.names = F)
 
 df_vig_ESP %>% 
   xlsx::write.xlsx(file = "output/vignettes_ESP.xlsx",row.names = F)
 ```
 
-- Imagina que conoces a la persona [ID] a través de tu círculo de conocidos. ¿Qué probabilidades hay de que te lleves bien con la persona [ID]?
-- Imagina que te enfrentas a una tarea que no puedes realizar por ti mismo. ¿Con qué probabilidad pedirías ayuda a la persona [ID]?
-- Imagina que la persona [ID] se muda a tu barrio. ¿Qué probabilidades hay de que entres en conflicto con esa persona?
-
-Test link: https://kunden.infas-online.de/q1/SurveyServlet 
 
 
 ```{r eval=FALSE, include=FALSE}
